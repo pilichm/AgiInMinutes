@@ -4,16 +4,19 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import pl.pilichm.agiinminutes.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnSelectDateButton.setOnClickListener{ view ->
+        binding.btnSelectDateButton.setOnClickListener{ view ->
             clickDatePicker(view)
         }
     }
@@ -28,14 +31,14 @@ class MainActivity : AppCompatActivity() {
                 _, selectedYear, selectedMonth, selectedDayOfMonth ->
             val selectedDate = "$selectedDayOfMonth/${selectedMonth+1}/$selectedYear"
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-            tvSelectedDate.text = selectedDate
+            binding.tvSelectedDate.text = selectedDate
 
             val theDate = sdf.parse(selectedDate)
             val selectedDateInDays = theDate!!.time / 216_000_000
             val currentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
             val currentDateToDays = currentDate!!.time / 216_000_000
             val differenceInDays = currentDateToDays - selectedDateInDays
-            tvSelectedDateInDays.text = differenceInDays.toString()
+            binding.tvSelectedDateInDays.text = differenceInDays.toString()
         }, year, month, dayOfMonth)
 
         /**
